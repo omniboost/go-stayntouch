@@ -1,55 +1,51 @@
-package vismanet_test
+package stayntouch_test
 
 import (
 	"context"
 	"log"
 	"net/url"
 	"os"
+	"strconv"
 	"testing"
 
-	vismanet "github.com/omniboost/go-stayntouch"
-	"golang.org/x/oauth2"
+	stayntouch "github.com/omniboost/go-stayntouch"
 )
 
 var (
-	client *vismanet.Client
+	client *stayntouch.Client
 )
 
 func TestMain(m *testing.M) {
 	baseURLString := os.Getenv("BASE_URL")
 	clientID := os.Getenv("CLIENT_ID")
 	clientSecret := os.Getenv("CLIENT_SECRET")
-	accessToken := os.Getenv("ACCESS_TOKEN")
-	refreshToken := os.Getenv("REFRESH_TOKEN")
-	companyID := os.Getenv("COMPANY_ID")
-	applicationType := os.Getenv("APPLICATION_TYPE")
+	apiVersion := os.Getenv("API_VERSION")
+	hotelID := os.Getenv("HOTEL_ID")
 	tokenURL := os.Getenv("TOKEN_URL")
 	debug := os.Getenv("DEBUG")
 
-	oauthConfig := vismanet.NewOauth2Config()
+	oauthConfig := stayntouch.NewOauth2Config()
 	oauthConfig.ClientID = clientID
 	oauthConfig.ClientSecret = clientSecret
 
 	// set alternative token url
 	if tokenURL != "" {
-		oauthConfig.Endpoint.TokenURL = tokenURL
-	}
-
-	token := &oauth2.Token{
-		RefreshToken: refreshToken,
-		AccessToken:  accessToken,
-		// Expiry:       time.Now().AddDate(0, 0, 1),
+		oauthConfig.TokenURL = tokenURL
 	}
 
 	// get http client with automatic oauth logic
-	httpClient := oauthConfig.Client(context.Background(), token)
+	httpClient := oauthConfig.Client(context.Background())
 
-	client = vismanet.NewClient(httpClient)
-	if companyID != "" {
-		client.SetCompanyID(companyID)
+	client = stayntouch.NewClient(httpClient)
+	if apiVersion != "" {
+		client.SetAPIVersion(apiVersion)
 	}
-	if applicationType != "" {
-		client.SetApplicationType(applicationType)
+	if hotelID != "" {
+		i, err := strconv.Atoi(hotelID)
+		if err != nil {
+			log.Fatal(err)
+		}
+		client.SetHotelID(i)
 	}
 	if debug != "" {
 		client.SetDebug(true)

@@ -1,4 +1,4 @@
-package vismanet
+package stayntouch
 
 import "net/url"
 

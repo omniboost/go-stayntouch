@@ -1,4 +1,4 @@
-package vismanet_test
+package stayntouch_test
 
 import (
 	"encoding/json"
@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestAccountGetAll(t *testing.T) {
-	req := client.NewAccountGetAll()
+func TestHotelsGet(t *testing.T) {
+	req := client.NewHotelsGet()
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
@@ -16,3 +16,5 @@ func TestAccountGetAll(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	fmt.Println(string(b))
 }
+
+

@@ -1,4 +1,4 @@
-package vismanet
+package stayntouch
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -20,7 +19,7 @@ import (
 
 const (
 	libraryVersion = "0.0.1"
-	userAgent      = "go-vismanet/" + libraryVersion
+	userAgent      = "go-stayntouch/" + libraryVersion
 	mediaType      = "application/json"
 	charset        = "utf-8"
 )
@@ -28,8 +27,8 @@ const (
 var (
 	BaseURL = url.URL{
 		Scheme: "https",
-		Host:   "integration.visma.net",
-		Path:   "/API/",
+		Host:   "api.eu.stayntouch.com",
+		Path:   "/connect/",
 	}
 )
 
@@ -59,10 +58,8 @@ type Client struct {
 	debug   bool
 	baseURL url.URL
 
-	// credentials
-	accessToken     string
-	companyID       string
-	applicationType string
+	apiVersion string
+	hotelID    int
 
 	// User agent for client
 	userAgent string
@@ -93,28 +90,20 @@ func (c *Client) SetDebug(debug bool) {
 	c.debug = debug
 }
 
-func (c Client) AccessToken() string {
-	return c.accessToken
+func (c Client) APIVersion() string {
+	return c.apiVersion
 }
 
-func (c *Client) SetAccessToken(accessToken string) {
-	c.accessToken = accessToken
+func (c *Client) SetAPIVersion(apiVersion string) {
+	c.apiVersion = apiVersion
 }
 
-func (c Client) CompanyID() string {
-	return c.companyID
+func (c Client) HotelID() int {
+	return c.hotelID
 }
 
-func (c *Client) SetCompanyID(companyID string) {
-	c.companyID = companyID
-}
-
-func (c Client) ApplicationType() string {
-	return c.applicationType
-}
-
-func (c *Client) SetApplicationType(applicationType string) {
-	c.applicationType = applicationType
+func (c *Client) SetHotelID(hotelID int) {
+	c.hotelID = hotelID
 }
 
 func (c Client) BaseURL() url.URL {
@@ -222,13 +211,7 @@ func (c *Client) NewRequest(ctx context.Context, req Request) (*http.Request, er
 	r.Header.Add("Content-Type", fmt.Sprintf("%s; charset=%s", c.MediaType(), c.Charset()))
 	r.Header.Add("Accept", c.MediaType())
 	r.Header.Add("User-Agent", c.UserAgent())
-	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AccessToken()))
-	if c.CompanyID() != "" {
-		r.Header.Add("ipp-company-id", c.CompanyID())
-	}
-	if c.ApplicationType() != "" {
-		r.Header.Add("ipp-application-type", c.ApplicationType())
-	}
+	r.Header.Add("API-Version", c.APIVersion())
 
 	return r, nil
 }
@@ -286,56 +269,54 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		return httpResp, nil
 	}
 
+	msgResp := &MessageResponse{}
 	errResp := &ErrorResponse{Response: httpResp}
 	exResp := &ExceptionResponse{Response: httpResp}
-	err = c.Unmarshal(httpResp.Body, body, errResp, exResp)
+	err = c.Unmarshal(httpResp.Body, []any{body}, []any{msgResp, errResp, exResp})
 	if err != nil {
 		return httpResp, err
 	}
 
-	if errResp.Message != "" {
+	if msgResp.Error() != "" {
+		return httpResp, msgResp
+	}
+
+	if errResp.Error() != "" {
 		return httpResp, errResp
 	}
 
-	if exResp.ExceptionMessage != "" {
+	if exResp.Error() != "" {
 		return httpResp, exResp
 	}
 
 	return httpResp, nil
 }
 
-func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
-	if len(vv) == 0 {
+func (c *Client) Unmarshal(r io.Reader, vv []interface{}, optionalVv []interface{}) error {
+	if len(vv) == 0 && len(optionalVv) == 0 {
 		return nil
 	}
 
-	b, err := ioutil.ReadAll(r)
+	b, err := io.ReadAll(r)
 	if err != nil {
 		return err
 	}
 
-	errs := []error{}
 	for _, v := range vv {
 		r := bytes.NewReader(b)
 		dec := json.NewDecoder(r)
-		if c.disallowUnknownFields {
-			dec.DisallowUnknownFields()
-		}
 
 		err := dec.Decode(v)
 		if err != nil && err != io.EOF {
-			errs = append(errs, err)
+			return errors.WithStack((err))
 		}
-
 	}
 
-	if len(errs) == len(vv) {
-		// Everything errored
-		msgs := make([]string, len(errs))
-		for i, e := range errs {
-			msgs[i] = fmt.Sprint(e)
-		}
-		return errors.New(strings.Join(msgs, ", "))
+	for _, v := range optionalVv {
+		r := bytes.NewReader(b)
+		dec := json.NewDecoder(r)
+
+		_ = dec.Decode(v)
 	}
 
 	return nil
@@ -360,8 +341,8 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	// read data and copy it back
-	data, err := ioutil.ReadAll(r.Body)
-	r.Body = ioutil.NopCloser(bytes.NewReader(data))
+	data, err := io.ReadAll(r.Body)
+	r.Body = io.NopCloser(bytes.NewReader(data))
 	if err != nil {
 		return errorResponse
 	}
@@ -375,19 +356,39 @@ func CheckResponse(r *http.Response) error {
 		return errors.New("response body is empty")
 	}
 
-	// convert json to struct
-	if len(data) != 0 {
-		err = json.Unmarshal(data, &errorResponse)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-	}
-
 	if errorResponse.Message != "" {
 		return errorResponse
 	}
 
 	return nil
+}
+
+// [{"code":"UNAUTHORIZED","message":"Missing API Version"}]
+type MessageResponse []struct {
+	// HTTP response that caused this error
+	Response *http.Response
+
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+func (r MessageResponse) Error() string {
+	errs := []string{}
+	for _, m := range r {
+		pieces := []string{}
+		if m.Code != "" {
+			pieces = append(pieces, m.Code)
+		}
+		if m.Message != "" {
+			pieces = append(pieces, m.Message)
+		}
+
+		s := strings.Join(pieces, ": ")
+		if s != "" {
+			errs = append(errs, s)
+		}
+	}
+	return strings.Join(errs, ", ")
 }
 
 type ExceptionResponse struct {
