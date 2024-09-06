@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	vismanet "github.com/omniboost/go-visma.net"
+	vismanet "github.com/omniboost/go-stayntouch"
 	"golang.org/x/oauth2"
 )
 

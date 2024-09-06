@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/omniboost/go-visma.net/utils"
+	"github.com/omniboost/go-stayntouch/utils"
 )
 
 func (c *Client) NewSubaccountGetAll() SubaccountGetAll {

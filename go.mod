@@ -1,4 +1,4 @@
-module github.com/omniboost/go-visma.net
+module github.com/omniboost/go-stayntouch
 
 go 1.16
 

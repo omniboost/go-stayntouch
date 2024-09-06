@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/cydev/zero"
-	"github.com/omniboost/go-visma.net/omitempty"
+	"github.com/omniboost/go-stayntouch/omitempty"
 )
 
 type Accounts []Account

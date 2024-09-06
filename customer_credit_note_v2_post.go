@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/omniboost/go-visma.net/omitempty"
-	"github.com/omniboost/go-visma.net/utils"
+	"github.com/omniboost/go-stayntouch/omitempty"
+	"github.com/omniboost/go-stayntouch/utils"
 )
 
 func (c *Client) NewCustomerCreditNoteV2Post() CustomerCreditNoteV2Post {
