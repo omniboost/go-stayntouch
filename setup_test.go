@@ -13,14 +13,15 @@ import (
 
 var (
 	client *stayntouch.Client
+	hotelID int
 )
 
 func TestMain(m *testing.M) {
+	var err error
 	baseURLString := os.Getenv("BASE_URL")
 	clientID := os.Getenv("CLIENT_ID")
 	clientSecret := os.Getenv("CLIENT_SECRET")
 	apiVersion := os.Getenv("API_VERSION")
-	hotelID := os.Getenv("HOTEL_ID")
 	tokenURL := os.Getenv("TOKEN_URL")
 	debug := os.Getenv("DEBUG")
 
@@ -40,12 +41,11 @@ func TestMain(m *testing.M) {
 	if apiVersion != "" {
 		client.SetAPIVersion(apiVersion)
 	}
-	if hotelID != "" {
-		i, err := strconv.Atoi(hotelID)
+	if t := os.Getenv("HOTEL_ID"); t != "" {
+		hotelID, err = strconv.Atoi(t)
 		if err != nil {
 			log.Fatal(err)
 		}
-		client.SetHotelID(i)
 	}
 	if debug != "" {
 		client.SetDebug(true)

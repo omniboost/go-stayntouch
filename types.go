@@ -178,3 +178,134 @@ type Reservation struct {
 		Phone                  string `json:"phone"`
 	} `json:"company,omitempty"`
 }
+
+type Guests []Guest
+
+type Guest struct {
+	Address struct {
+		AddressLine1 string `json:"address_line1"`
+		City         string `json:"city"`
+		CountryCode  string `json:"country_code"`
+		ID           int    `json:"id"`
+		PostalCode   string `json:"postal_code"`
+		State        string `json:"state"`
+	} `json:"address,omitempty"`
+	ID                     int    `json:"id"`
+	FirstName              string `json:"first_name"`
+	LastName               string `json:"last_name"`
+	Birthday               string `json:"birthday,omitempty"`
+	IsVip                  bool   `json:"is_vip"`
+	Language               string `json:"language,omitempty"`
+	Nationality            string `json:"nationality,omitempty"`
+	OptedPromotionalEmails bool   `json:"opted_promotional_emails"`
+	Title                  string `json:"title,omitempty"`
+	IsFlagged              bool   `json:"is_flagged"`
+	Email                  string `json:"email,omitempty"`
+	WorksAt                string `json:"works_at,omitempty"`
+	Likes                  []struct {
+		Category string   `json:"category"`
+		Names    []string `json:"names"`
+	} `json:"likes,omitempty"`
+	HomePhone   string `json:"home_phone,omitempty"`
+	MobilePhone string `json:"mobile_phone,omitempty"`
+}
+
+type Rooms []Room
+
+type Room struct {
+	ID            int    `json:"id"`
+	Number        string `json:"number"`
+	RoomTypeID    int    `json:"room_type_id"`
+	Status        string `json:"status"`
+	ServiceStatus string `json:"service_status"`
+	Occupied      bool   `json:"occupied"`
+	MaxOccupancy  int    `json:"max_occupancy,omitempty"`
+	SuiteDoor     bool   `json:"suite_door"`
+	Floor         struct {
+		Number      string `json:"number"`
+		Description string `json:"description"`
+	} `json:"floor"`
+	Features []string `json:"features"`
+}
+
+type RoomType struct {
+	ID           int    `json:"id"`
+	Code         string `json:"code"`
+	Name         string `json:"name"`
+	Description  string `json:"description"`
+	MaxOccupancy int    `json:"max_occupancy"`
+	ImageURL     string `json:"image_url"`
+	Suite        bool   `json:"suite"`
+	Pseudo       bool   `json:"pseudo"`
+}
+
+type Rate struct {
+	ID           int    `json:"id"`
+	Code         string `json:"code"`
+	Name         string `json:"name"`
+	Description  string `json:"description"`
+	CurrencyCode string `json:"currency_code"`
+	Type         struct {
+		ID             int    `json:"id"`
+		Name           string `json:"name"`
+		Classification string `json:"classification"`
+		Active         bool   `json:"active"`
+	} `json:"type"`
+	ChargeCode struct {
+		ID             int     `json:"id"`
+		ChargeCode     string  `json:"charge_code"`
+		Description    string  `json:"description"`
+		ChargeGroup    string  `json:"charge_group"`
+		ChargeCodeType string  `json:"charge_code_type"`
+		Amount         float64 `json:"amount"`
+		PostType       string  `json:"post_type"`
+		AmountType     string  `json:"amount_type"`
+		AmountSymbol   string  `json:"amount_symbol"`
+	} `json:"charge_code"`
+	BasedOnRate struct {
+		ID           int    `json:"id"`
+		Name         string `json:"name"`
+		BasedOnType  string `json:"based_on_type"`
+		BasedOnValue string `json:"based_on_value"`
+	} `json:"based_on_rate"`
+	DiscountAllowed         bool   `json:"discount_allowed"`
+	Active                  bool   `json:"active"`
+	TaxInclusiveOrExclusive string `json:"tax_inclusive_or_exclusive"`
+	SuppressRate            bool   `json:"suppress_rate"`
+	MarketSegmentCode       string `json:"market_segment_code"`
+	SourceCode              string `json:"source_code"`
+	Commissionable          bool   `json:"commissionable"`
+	DepositPolicy           struct {
+		ID          int    `json:"id"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	} `json:"deposit_policy"`
+	CancellationPolicy struct {
+		ID          int    `json:"id"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	} `json:"cancellation_policy"`
+	Addons []struct {
+		ID                  int      `json:"id"`
+		Name                string   `json:"name"`
+		Description         string   `json:"description"`
+		Amount              float64  `json:"amount"`
+		AmountType          string   `json:"amount_type"`
+		PostType            string   `json:"post_type"`
+		PostTypeDescription string   `json:"post_type_description"`
+		PostDays            []string `json:"post_days"`
+		ChargeCodeID        int      `json:"charge_code_id"`
+		ChargeGroupID       int      `json:"charge_group_id"`
+		CurrencyCode        string   `json:"currency_code"`
+		IncludedInRate      bool     `json:"included_in_rate"`
+	} `json:"addons"`
+	RoomTypes []struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	} `json:"room_types"`
+	HourlyRate  bool `json:"hourly_rate"`
+	PublicRate  bool `json:"public_rate"`
+	Member      bool `json:"member"`
+	PmsOnly     bool `json:"pms_only"`
+	ChannelOnly bool `json:"channel_only"`
+}

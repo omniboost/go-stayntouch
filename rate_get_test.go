@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestReservationsGet(t *testing.T) {
-	req := client.NewReservationsGet()
-	req.QueryParams().HotelID = hotelID
+func TestRateGet(t *testing.T) {
+	req := client.NewRateGet()
+	req.PathParams().ID = 20450
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
@@ -17,4 +17,8 @@ func TestReservationsGet(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	fmt.Println(string(b))
 }
+
+
+
+
 

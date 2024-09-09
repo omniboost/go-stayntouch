@@ -59,7 +59,6 @@ type Client struct {
 	baseURL url.URL
 
 	apiVersion string
-	hotelID    int
 
 	// User agent for client
 	userAgent string
@@ -96,14 +95,6 @@ func (c Client) APIVersion() string {
 
 func (c *Client) SetAPIVersion(apiVersion string) {
 	c.apiVersion = apiVersion
-}
-
-func (c Client) HotelID() int {
-	return c.hotelID
-}
-
-func (c *Client) SetHotelID(hotelID int) {
-	c.hotelID = hotelID
 }
 
 func (c Client) BaseURL() url.URL {
@@ -272,7 +263,7 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 	msgResp := &MessageResponse{}
 	errResp := &ErrorResponse{Response: httpResp}
 	exResp := &ExceptionResponse{Response: httpResp}
-	err = c.Unmarshal(httpResp.Body, []any{body}, []any{msgResp, errResp, exResp})
+	err = c.Unmarshal(httpResp.Body, []any{}, []any{body, msgResp, errResp, exResp})
 	if err != nil {
 		return httpResp, err
 	}
