@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	client *stayntouch.Client
+	client  *stayntouch.Client
 	hotelID int
 )
 
@@ -25,7 +25,8 @@ func TestMain(m *testing.M) {
 	tokenURL := os.Getenv("TOKEN_URL")
 	debug := os.Getenv("DEBUG")
 
-	oauthConfig := stayntouch.NewOauth2Config()
+	// Default oausth2 flow
+	oauthConfig := stayntouch.NewOauth2ClientCredentialsConfig()
 	oauthConfig.ClientID = clientID
 	oauthConfig.ClientSecret = clientSecret
 

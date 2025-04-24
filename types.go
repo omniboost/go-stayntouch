@@ -179,6 +179,107 @@ type Reservation struct {
 	} `json:"company,omitempty"`
 }
 
+type ChargeCodesBasicTaxes struct {
+	ID          int    `json:"id"`
+	ChargeCode  string `json:"charge_code"`
+	Description string `json:"description"`
+	Taxes       []struct {
+		IsInclusive           bool   `json:"is_inclusive"`
+		ChargeCodeID          int    `json:"charge_code_id"`
+		ChargeCode            string `json:"charge_code"`
+		ChargeCodeDescription string `json:"charge_code_description"`
+		Percentage            string `json:"percentage"`
+		AmountType            string `json:"amount_type"`
+		PostType              string `json:"post_type"`
+		ChargeGroup           string `json:"charge_group"`
+		ChargeCodeType        string `json:"charge_code_type"`
+	} `json:"taxes"`
+}
+
+type ChargeCodes []ChargeCode
+
+type ChargeCode struct {
+	ID           int    `json:"id"`
+	Name         string `json:"name"`
+	Translations []struct {
+		LanguageCode string `json:"language_code"`
+		Name         string `json:"name"`
+		Description  string `json:"description"`
+	} `json:"translations"`
+}
+
+type DirectBills []DirectBill
+
+type DirectBill struct {
+	Number           string `json:"number"`
+	FolioNumber      string `json:"folio_number"`
+	ArInvoiceNumber  string `json:"ar_invoice_number"`
+	ModInvoiceNumber string `json:"mod_invoice_number"`
+	CurrencyCode     string `json:"currency_code"`
+	IssueDate        string `json:"issue_date"`
+	PaymentDueDate   string `json:"payment_due_date"`
+	Hotel            struct {
+		ID   int    `json:"id"`
+		Code string `json:"code"`
+		Name string `json:"name"`
+	} `json:"hotel"`
+	Reservation struct {
+		ID                 int    `json:"id"`
+		PrimaryGuestName   string `json:"primary_guest_name"`
+		RoomNumber         string `json:"room_number"`
+		ConfirmationNumber string `json:"confirmation_number"`
+	} `json:"reservation"`
+	PostingAccount struct {
+		ID     int    `json:"id"`
+		Name   string `json:"name"`
+		Number string `json:"number"`
+	} `json:"posting_account"`
+	Account struct {
+		Name                   string `json:"name"`
+		ArNumber               string `json:"ar_number"`
+		OrganizationIdentifier string `json:"organization_identifier"`
+		CorporateID            string `json:"corporate_id"`
+		TaxID                  string `json:"tax_id"`
+		EInvoiceAddress        string `json:"e_invoice_address"`
+		Address                struct {
+			Line1      string `json:"line1"`
+			Line2      string `json:"line2"`
+			Line3      string `json:"line3"`
+			City       string `json:"city"`
+			Country    string `json:"country"`
+			State      string `json:"state"`
+			PostalCode string `json:"postal_code"`
+		} `json:"address"`
+	} `json:"account"`
+	Transactions []struct {
+		Items []struct {
+			Description     string `json:"description"`
+			Code            string `json:"code"`
+			ReferenceText   string `json:"reference_text"`
+			ReferenceNumber string `json:"reference_number"`
+			Amount          string `json:"amount"`
+			IsInclusive     bool   `json:"is_inclusive"`
+			Date            string `json:"date"`
+			Taxes           []struct {
+				Description     string      `json:"description"`
+				Code            string      `json:"code"`
+				ReferenceText   string      `json:"reference_text"`
+				ReferenceNumber string      `json:"reference_number"`
+				Amount          StringFloat `json:"amount"`
+				Date            string      `json:"date"`
+				IsInclusive     bool        `json:"is_inclusive"`
+				Percent         StringFloat `json:"percent"`
+				FlatAmount      StringFloat `json:"flat_amount"`
+				Type            string      `json:"type"`
+			} `json:"taxes"`
+		} `json:"items"`
+		Code        string      `json:"code"`
+		Description string      `json:"description"`
+		TotalAmount StringFloat `json:"total_amount"`
+	} `json:"transactions"`
+	PayableAmount StringFloat `json:"payable_amount"`
+}
+
 type Guests []Guest
 
 type Guest struct {
