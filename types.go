@@ -280,6 +280,31 @@ type DirectBill struct {
 	PayableAmount StringFloat `json:"payable_amount"`
 }
 
+type RevenueItems []RevenueItem
+
+type RevenueItem struct {
+	ID              int         `json:"id"`
+	ReservationID   int         `json:"reservation_id"`
+	ChargeCode      string      `json:"charge_code"`
+	ChargeCodeName  string      `json:"charge_code_name"`
+	Amount          StringFloat `json:"amount"`
+	Date            string      `json:"date"`
+	Description     string      `json:"description"`
+	ReferenceNumber string      `json:"reference_number"`
+	CurrencyCode    string      `json:"currency_code"`
+	Hotel           struct {
+		ID   int    `json:"id"`
+		Code string `json:"code"`
+		Name string `json:"name"`
+	} `json:"hotel"`
+	Reservation struct {
+		ID                 int    `json:"id"`
+		PrimaryGuestName   string `json:"primary_guest_name"`
+		RoomNumber         string `json:"room_number"`
+		ConfirmationNumber string `json:"confirmation_number"`
+	} `json:"reservation"`
+}
+
 type Guests []Guest
 
 type Guest struct {
