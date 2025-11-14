@@ -280,6 +280,18 @@ type DirectBill struct {
 	PayableAmount StringFloat `json:"payable_amount"`
 }
 
+type InvoicesPerDay []InvoicePerDay
+
+type InvoicePerDay struct {
+	Date          string  `json:"date"`
+	HotelID       int     `json:"hotel_id"`
+	Amount        float64 `json:"amount"`
+	ArAccount     string  `json:"ar_account"`
+	AccountNumber string  `json:"account_number"`
+	BillID        int     `json:"bill_id"`
+	InvoiceNumber string  `json:"invoice_number"`
+}
+
 type Guests []Guest
 
 type Guest struct {
@@ -409,4 +421,47 @@ type Rate struct {
 	Member      bool `json:"member"`
 	PmsOnly     bool `json:"pms_only"`
 	ChannelOnly bool `json:"channel_only"`
+}
+
+type Accounts struct {
+	Results    []Account `json:"results"`
+	TotalCount int       `json:"total_count"`
+}
+
+type Address struct {
+	AddressLine1 string `json:"address_line1"`
+	AddressLine2 string `json:"address_line2"`
+	AddressLine3 string `json:"address_line3"`
+	City         string `json:"city"`
+	CountryCode  string `json:"country_code"`
+	ID           int    `json:"id"`
+	PostalCode   string `json:"postal_code"`
+	State        string `json:"state"`
+}
+type PrimaryContact struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	JobTitle  string `json:"job_title"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email"`
+}
+type Commision struct {
+	On    bool   `json:"on"`
+	Value string `json:"value"`
+	Type  string `json:"type"`
+}
+
+type Account struct {
+	Address        Address        `json:"address"`
+	PrimaryContact PrimaryContact `json:"primary_contact"`
+	Commision      Commision      `json:"commision"`
+	ArNumber       string         `json:"ar_number"`
+	HotelID        int            `json:"hotel_id"`
+	ID             int            `json:"id"`
+	IsGlobal       bool           `json:"is_global"`
+	Name           string         `json:"name"`
+	Type           string         `json:"type"`
+	Email          string         `json:"email"`
+	Phone          string         `json:"phone"`
+	AccountNumber  string         `json:"account_number"`
 }
