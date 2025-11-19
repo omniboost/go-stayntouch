@@ -141,7 +141,7 @@ func (r *BillsRevenueGet) All(ctx context.Context) (LedgerItems, error) {
 	// Begin at page 1 and set per_page to 20.
 	// Per page 20 is the maximum the API currently allows.
 	r.queryParams.Page = 1
-	r.queryParams.PerPage = 50
+	r.queryParams.PerPage = 20
 
 	// Set ledger items
 	ledgerItems := LedgerItems{}
