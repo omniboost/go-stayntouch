@@ -495,3 +495,25 @@ type LedgerTaxItem struct {
 	ChargeCodeDescription string  `json:"charge_code_description"`
 	Amount                float64 `json:"amount"`
 }
+
+type HotelChargeCodes []HotelChargeCode
+
+type HotelChargeCode struct {
+	ID                  int     `json:"id"`
+	ChargeCode          string  `json:"charge_code"`
+	Description         string  `json:"description"`
+	ChargeGroup         string  `json:"charge_group"`
+	ChargeCodeType      string  `json:"charge_code_type"`
+	Amount              float64 `json:"amount"`
+	PostType            string  `json:"post_type"`
+	AmountType          string  `json:"amount_type"`
+	AmountSymbol        string  `json:"amount_symbol"`
+	AllowManualPostings bool    `json:"allow_manual_postings"`
+	ServiceFee          struct {
+		ChargeCodeID                      int  `json:"charge_code_id"`
+		InclusiveInLinkedChargeCode       bool `json:"inclusive_in_linked_charge_code"`
+		IncludeServiceFeeInTaxCalculation bool `json:"include_service_fee_in_tax_calculation"`
+		BundleWithLinkedChargeCode        bool `json:"bundle_with_linked_charge_code"`
+	} `json:"service_fee"`
+	MinimumAmountToCharge float64 `json:"minimum_amount_to_charge"`
+}
