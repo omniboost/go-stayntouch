@@ -140,3 +140,37 @@ func (r *DirectBillsGet) Do(ctx context.Context) (DirectBillsGetResponseBody, er
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
 }
+
+func (r *DirectBillsGet) All(ctx context.Context) (DirectBills, error) {
+	// Begin at page 1 and set per_page to 20.
+	// Per page 20 is the maximum the API currently allows.
+	r.queryParams.Page = 1
+	r.queryParams.PerPage = 50
+
+	// Set ledger items
+	bills := DirectBills{}
+	for {
+		response, err := r.Do(ctx)
+		if err != nil {
+			return DirectBills{}, err
+		}
+
+		// Break if no results are returned
+		if len(response.Results) == 0 {
+			break
+		}
+
+		// Set the ledger items
+		bills = append(bills, response.Results...)
+
+		// Check if we have the total count already
+		if len(bills) >= response.TotalCount {
+			break
+		}
+
+		// Set the next page
+		r.queryParams.Page++
+	}
+
+	return bills, nil
+}

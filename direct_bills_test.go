@@ -22,3 +22,16 @@ func TestDirectBillsGet(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	fmt.Println(string(b))
 }
+
+func TestDirectBillsGetAll(t *testing.T) {
+	req := client.NewDirectBillsGet()
+	req.QueryParams().HotelID = hotelID
+	req.QueryParams().Date = stayntouch.Date{time.Date(2024, 10, 8, 0, 0, 0, 0, time.UTC)}
+	resp, err := req.All(context.Background())
+	if err != nil {
+		t.Error(err)
+	}
+
+	b, _ := json.MarshalIndent(resp, "", "  ")
+	fmt.Println(string(b))
+}
