@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestChargeCodesGet(t *testing.T) {
-	req := client.NewChargeCodesGet()
+func TestChargeCodeTranslationsGet(t *testing.T) {
+	req := client.NewChargeCodeTranslationsGet()
 	req.QueryParams().HotelID = hotelID
 	// req.QueryParams().LanguageCode = "EN"
 	resp, err := req.Do()

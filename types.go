@@ -204,9 +204,9 @@ type ChargeCodesBasicTaxes struct {
 	} `json:"taxes"`
 }
 
-type ChargeCodes []ChargeCode
+type ChargeCodeTranslations []ChargeCodeTranslation
 
-type ChargeCode struct {
+type ChargeCodeTranslation struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	Translations []struct {
