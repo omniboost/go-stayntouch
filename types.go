@@ -1,5 +1,13 @@
 package stayntouch
 
+type RevenueLedger string
+
+const (
+	RevenueGuestLedger   RevenueLedger = "guest"
+	RevenueDepositLedger RevenueLedger = "deposit"
+	RevenueArLedger      RevenueLedger = "ar"
+)
+
 type Hotels []Hotel
 
 type Hotel struct {
@@ -464,4 +472,26 @@ type Account struct {
 	Email          string         `json:"email"`
 	Phone          string         `json:"phone"`
 	AccountNumber  string         `json:"account_number"`
+}
+
+type LedgerItems []LedgerItem
+
+type LedgerItem struct {
+	ChargeCode            string         `json:"charge_code"`
+	ChargeCodeDescription string         `json:"charge_code_description"`
+	NetAmount             float64        `json:"net_amount"`
+	GrossAmount           float64        `json:"gross_amount"`
+	Account               string         `json:"account"`
+	VATCode               string         `json:"vat_code"`
+	CostCenter            string         `json:"cost_center"`
+	Taxes                 LedgerTaxItems `json:"taxes"`
+}
+
+type LedgerTaxItems []LedgerTaxItem
+
+type LedgerTaxItem struct {
+	TaxInclusive          bool    `json:"tax_inclusive"`
+	ChargeCode            string  `json:"charge_code"`
+	ChargeCodeDescription string  `json:"charge_code_description"`
+	Amount                float64 `json:"amount"`
 }
