@@ -1,6 +1,7 @@
 package stayntouch_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -10,7 +11,7 @@ func TestChargeCodeTranslationsGet(t *testing.T) {
 	req := client.NewChargeCodeTranslationsGet()
 	req.QueryParams().HotelID = hotelID
 	// req.QueryParams().LanguageCode = "EN"
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

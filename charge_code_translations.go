@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -122,9 +123,9 @@ func (r *ChargeCodeTranslationsGet) URL() *url.URL {
 	return &u
 }
 
-func (r *ChargeCodeTranslationsGet) Do() (ChargeCodeTranslationsGetResponseBody, error) {
+func (r *ChargeCodeTranslationsGet) Do(ctx context.Context) (ChargeCodeTranslationsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

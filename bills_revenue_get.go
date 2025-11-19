@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -118,9 +119,9 @@ func (r *BillsRevenueGet) URL() *url.URL {
 	return &u
 }
 
-func (r *BillsRevenueGet) Do() (BillsRevenueGetResponseBody, error) {
+func (r *BillsRevenueGet) Do(ctx context.Context) (BillsRevenueGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -136,7 +137,7 @@ func (r *BillsRevenueGet) Do() (BillsRevenueGetResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *BillsRevenueGet) All() (LedgerItems, error) {
+func (r *BillsRevenueGet) All(ctx context.Context) (LedgerItems, error) {
 	// Begin at page 1 and set per_page to 20.
 	// Per page 20 is the maximum the API currently allows.
 	r.queryParams.Page = 1
@@ -145,7 +146,7 @@ func (r *BillsRevenueGet) All() (LedgerItems, error) {
 	// Set ledger items
 	ledgerItems := LedgerItems{}
 	for {
-		response, err := r.Do()
+		response, err := r.Do(ctx)
 		if err != nil {
 			return LedgerItems{}, err
 		}

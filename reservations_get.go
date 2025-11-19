@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -134,9 +135,9 @@ func (r *ReservationsGet) URL() *url.URL {
 	return &u
 }
 
-func (r *ReservationsGet) Do() (ReservationsGetResponseBody, error) {
+func (r *ReservationsGet) Do(ctx context.Context) (ReservationsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

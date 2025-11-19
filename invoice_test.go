@@ -1,6 +1,7 @@
 package stayntouch_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -10,7 +11,7 @@ func TestInvoiceGet(t *testing.T) {
 	req := client.NewInvoiceGet()
 	req.PathParams().ID = "56706959"
 	req.QueryParams().HotelID = hotelID
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

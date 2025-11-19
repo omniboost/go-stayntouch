@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -116,9 +117,9 @@ func (r *InvoiceGet) URL() *url.URL {
 	return &u
 }
 
-func (r *InvoiceGet) Do() (InvoiceGetResponseBody, error) {
+func (r *InvoiceGet) Do(ctx context.Context) (InvoiceGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

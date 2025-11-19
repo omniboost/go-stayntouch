@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -115,9 +116,9 @@ func (r *RateGet) URL() *url.URL {
 	return &u
 }
 
-func (r *RateGet) Do() (RateGetResponseBody, error) {
+func (r *RateGet) Do(ctx context.Context) (RateGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -132,4 +133,3 @@ func (r *RateGet) Do() (RateGetResponseBody, error) {
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
 }
-

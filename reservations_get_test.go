@@ -1,6 +1,7 @@
 package stayntouch_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -9,7 +10,7 @@ import (
 func TestReservationsGet(t *testing.T) {
 	req := client.NewReservationsGet()
 	req.QueryParams().HotelID = hotelID
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -17,4 +18,3 @@ func TestReservationsGet(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	fmt.Println(string(b))
 }
-

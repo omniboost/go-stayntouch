@@ -1,6 +1,7 @@
 package stayntouch_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -13,7 +14,7 @@ func TestInvoicesPerDayGet(t *testing.T) {
 	req := client.NewInvoicesPerDayGet()
 	req.QueryParams().HotelID = hotelID
 	req.QueryParams().Date = stayntouch.Date{time.Date(2025, 9, 9, 0, 0, 0, 0, time.UTC)}
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

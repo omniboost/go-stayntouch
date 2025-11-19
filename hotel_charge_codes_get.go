@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -122,9 +123,9 @@ func (r *HotelChargeCodesGet) URL() *url.URL {
 	return &u
 }
 
-func (r *HotelChargeCodesGet) Do() (HotelChargeCodesGetResponseBody, error) {
+func (r *HotelChargeCodesGet) Do(ctx context.Context) (HotelChargeCodesGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -140,7 +141,7 @@ func (r *HotelChargeCodesGet) Do() (HotelChargeCodesGetResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *HotelChargeCodesGet) All() (HotelChargeCodes, error) {
+func (r *HotelChargeCodesGet) All(ctx context.Context) (HotelChargeCodes, error) {
 	// Begin at page 1 and set per_page to 20.
 	// Per page 20 is the maximum the API currently allows.
 	r.queryParams.Page = 1
@@ -149,7 +150,7 @@ func (r *HotelChargeCodesGet) All() (HotelChargeCodes, error) {
 	// Set ledger items
 	chargeCodes := HotelChargeCodes{}
 	for {
-		response, err := r.Do()
+		response, err := r.Do(ctx)
 		if err != nil {
 			return HotelChargeCodes{}, err
 		}

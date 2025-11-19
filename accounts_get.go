@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/url"
@@ -150,9 +151,9 @@ func (r *AccountsGet) URL() *url.URL {
 	return &u
 }
 
-func (r *AccountsGet) Do() (AccountsGetResponseBody, error) {
+func (r *AccountsGet) Do(ctx context.Context) (AccountsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

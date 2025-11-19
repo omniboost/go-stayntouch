@@ -1,6 +1,7 @@
 package stayntouch
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -122,9 +123,9 @@ func (r *DirectBillsGet) URL() *url.URL {
 	return &u
 }
 
-func (r *DirectBillsGet) Do() (DirectBillsGetResponseBody, error) {
+func (r *DirectBillsGet) Do(ctx context.Context) (DirectBillsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
