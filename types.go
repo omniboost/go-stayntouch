@@ -485,6 +485,10 @@ type LedgerItem struct {
 	VATCode               string         `json:"vat_code"`
 	CostCenter            string         `json:"cost_center"`
 	Taxes                 LedgerTaxItems `json:"taxes"`
+
+	// Created internally, as Stayntouch doesn't provide this data
+	Date       string        `json:"date,omitempty"`
+	LedgerType RevenueLedger `json:"ledger_type,omitempty"`
 }
 
 type LedgerTaxItems []LedgerTaxItem

@@ -134,7 +134,17 @@ func (r *BillsRevenueGet) Do(ctx context.Context) (BillsRevenueGetResponseBody, 
 
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
-	return *responseBody, err
+	if err != nil {
+		return *r.NewResponseBody(), err
+	}
+
+	// Loop through every item and set date + ledger type
+	for i := range responseBody.Results {
+		responseBody.Results[i].Date = r.QueryParams().Date.Time.Format("2006-01-02")
+		responseBody.Results[i].LedgerType = r.QueryParams().Ledger
+	}
+
+	return *responseBody, nil
 }
 
 func (r *BillsRevenueGet) All(ctx context.Context) (LedgerItems, error) {
