@@ -98,20 +98,20 @@ type Reservation struct {
 		Features []string `json:"features"`
 	} `json:"room,omitempty"`
 	StayDates []struct {
-		Date               string `json:"date"`
-		ID                 int    `json:"id"`
-		Amount             string `json:"amount"`
-		NetAmount          string `json:"net_amount"`
-		TaxAmount          string `json:"tax_amount"`
-		ExclusiveTaxAmount string `json:"exclusive_tax_amount"`
-		InclusiveTaxAmount string `json:"inclusive_tax_amount"`
-		RateID             int    `json:"rate_id"`
-		RateSuppressed     bool   `json:"rate_suppressed"`
-		RoomTypeID         int    `json:"room_type_id"`
-		Adults             int    `json:"adults"`
-		Children           int    `json:"children"`
-		Infants            int    `json:"infants"`
-		OriginalRoomTypeID int    `json:"original_room_type_id"`
+		Date               string      `json:"date"`
+		ID                 int         `json:"id"`
+		Amount             StringFloat `json:"amount"`
+		NetAmount          StringFloat `json:"net_amount"`
+		TaxAmount          StringFloat `json:"tax_amount"`
+		ExclusiveTaxAmount StringFloat `json:"exclusive_tax_amount"`
+		InclusiveTaxAmount StringFloat `json:"inclusive_tax_amount"`
+		RateID             int         `json:"rate_id"`
+		RateSuppressed     bool        `json:"rate_suppressed"`
+		RoomTypeID         int         `json:"room_type_id"`
+		Adults             int         `json:"adults"`
+		Children           int         `json:"children"`
+		Infants            int         `json:"infants"`
+		OriginalRoomTypeID int         `json:"original_room_type_id"`
 		Room               struct {
 			ID            int    `json:"id"`
 			Number        string `json:"number"`
@@ -261,13 +261,13 @@ type DirectBill struct {
 	} `json:"account"`
 	Transactions []struct {
 		Items []struct {
-			Description     string `json:"description"`
-			Code            string `json:"code"`
-			ReferenceText   string `json:"reference_text"`
-			ReferenceNumber string `json:"reference_number"`
-			Amount          string `json:"amount"`
-			IsInclusive     bool   `json:"is_inclusive"`
-			Date            string `json:"date"`
+			Description     string      `json:"description"`
+			Code            string      `json:"code"`
+			ReferenceText   string      `json:"reference_text"`
+			ReferenceNumber string      `json:"reference_number"`
+			Amount          StringFloat `json:"amount"`
+			IsInclusive     bool        `json:"is_inclusive"`
+			Date            string      `json:"date"`
 			Taxes           []struct {
 				Description     string      `json:"description"`
 				Code            string      `json:"code"`
