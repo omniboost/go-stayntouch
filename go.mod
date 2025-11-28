@@ -1,11 +1,11 @@
 module github.com/omniboost/go-stayntouch
 
-go 1.23
+go 1.23.0
 
 require (
 	github.com/gorilla/schema v0.0.0-20171211162101-9fa3b6af65dc
 	github.com/pkg/errors v0.9.1
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/oauth2 v0.27.0
 	gopkg.in/guregu/null.v3 v3.5.0
 )
 
