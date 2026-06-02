@@ -219,14 +219,15 @@ type ChargeCodeTranslation struct {
 type DirectBills []DirectBill
 
 type DirectBill struct {
-	Number           string `json:"number"`
-	FolioNumber      string `json:"folio_number"`
-	ArInvoiceNumber  string `json:"ar_invoice_number"`
-	ModInvoiceNumber string `json:"mod_invoice_number"`
-	CurrencyCode     string `json:"currency_code"`
-	IssueDate        string `json:"issue_date"`
-	PaymentDueDate   string `json:"payment_due_date"`
-	Hotel            struct {
+	Number                 string `json:"number"`
+	FolioNumber            string `json:"folio_number"`
+	ArInvoiceNumber        string `json:"ar_invoice_number"`
+	ModInvoiceNumber       string `json:"mod_invoice_number"`
+	RoutingReferenceNumber string `json:"routing_reference_number"`
+	CurrencyCode           string `json:"currency_code"`
+	IssueDate              string `json:"issue_date"`
+	PaymentDueDate         string `json:"payment_due_date"`
+	Hotel                  struct {
 		ID   int    `json:"id"`
 		Code string `json:"code"`
 		Name string `json:"name"`
